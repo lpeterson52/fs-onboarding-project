@@ -7,9 +7,8 @@ class Car:
         A car object to be used with the PIDController class. Stores kinematics info, current time, and step count.
 
         Args:
-            K_P: Proportional gain.
-            K_I: Integral gain. Defaults to 0.0 (disabled).
-            K_D: Derivative gain. Defaults to 0.0 (disabled).
+            desired_v: Velocity set point [m/s]. Defaults to 20.0.
+            dt: Timestep length [s]. Defaults to 0.1.
         """
         self.velocity: float = 0
         self.acceleration: float = 0
@@ -18,9 +17,6 @@ class Car:
         self.dt: float = dt 
         self.desired_v: float = desired_v 
         self.step: int = 0
-    
-        self.error_prev: float = None
-        self.net_integral: float = 0.0
     
     def update(self, throttle_perc: float, mass: float = 1000, max_throttle_force: float = 5000, friction: float = 2.0) -> None:
         
