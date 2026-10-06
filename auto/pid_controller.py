@@ -40,18 +40,17 @@ class PIDController:
         self.error_prev = error
         return (P + I + D, error)
 
-def acceleration_to_throttle_percentage(desired_acceleration: float, mass: float = 1000, max_throttle_force: float = 5000) -> float:
+def acceleration_to_throttle_percentage(car: Car, desired_acceleration: float) -> float:
     """Calculates throttle based on desired acceleration.
 
     Args:
+        car: The car which contains the kinematics state.
         desired_acceleration: The commanded acceleration [m/s^2].
-        mass: Mass of the car [kg]. Defaults to 1000.
-        max_throttle_force: Max throttle force of car [N]. Defaults to 5000.
 
     Returns:
         The desired throttle clipped to be between -1 and 1.
     """
-    max_acceleration: float = max_throttle_force / mass
+    max_acceleration: float = car.max_throttle_force / car.mass
     desired_throttle: float = desired_acceleration / max_acceleration
-    clipped = np.clip(desired_throttle, -1.0, 1.0)
+    clipped: float = np.clip(desired_throttle, -1.0, 1.0)
     return clipped
