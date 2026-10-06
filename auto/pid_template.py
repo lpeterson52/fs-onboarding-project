@@ -6,15 +6,15 @@ def make_car(desired_v:float=20.0, dt:float=0.1) -> dict:
     Generates a dictionary that holds all the car's values. Keeps track of state varaibles.
     """
     car_state_dictionary : dict[str, float] = {
-        "v" : 0, #velocity of your car 
-        "a" : 0, #acceleration of your car
-        "t" : 0, #time of your car
-        "x" : 0, #position of your car
-        "dt" : dt, #time step of your car, how much the time changes every time you update/step
-        "desired_v" : desired_v, #desired velocity of your car, the velocity you want to maintain
+        "v" : 0, # velocity of your car 
+        "a" : 0, # acceleration of your car
+        "t" : 0, # time of your car
+        "x" : 0, # position of your car
+        "dt" : dt, # time step of your car, how much the time changes every time you update/step
+        "desired_v" : desired_v, # desired velocity of your car, the velocity you want to maintain
         "step" : 0,
     
-        #hint: use these variables in the integral and derivative portion of your PID control (steps 5 and 6 )
+        # hint: use these variables in the integral and derivative portion of your PID control (steps 5 and 6 )
         "error_prev" : None,
         "net_integral" : 0.0
     }
@@ -41,14 +41,19 @@ def update(car: dict, throttle_perc: float, mass: float = 1000, max_throttle_for
 
 
 def calculate_desired_acceleration(car: dict, K_P: float, K_I: float = 0.0, K_D: float = 0.0) -> tuple[float, float]:
-        #input: car["v"], car["desired_v"] (floats)
-        #output: desired acceleration and error tuple(float, float)
-        pass # delete this line and write your PID code here
+        # input: car["v"], car["desired_v"] (floats)
+        error: float = car["desired_v"] - car["v"]
+        P: float = K_P * error
+        # output: desired acceleration and error tuple(float, float)
+        return (P, error)
 
 
 
 
 def acceleration_to_throttle_percentage(acceleration_desired: float, mass: float = 1000, max_throttle_force: float = 5000) -> float:
-        #input: desired_acceleration(float)
-        #output: throttle percentage (float, -1 to 1)
-        pass # delete this line and write your code to convert desired acceleration to throttle here
+        # input: desired_acceleration(float)
+        # output: throttle percentage (float, -1 to 1)
+        max_acceleration: float = max_throttle_force / mass
+        desired_throttle: float = acceleration_desired / max_acceleration
+        clipped = np.clip(desired_throttle, -1, 1)
+        return clipped
