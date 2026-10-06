@@ -32,12 +32,12 @@ class PIDController:
         """
         error: float = car.desired_v - car.velocity
         P: float = self.K_P * error
-        car.net_integral += error * car.dt
-        I: float = self.K_I * car.net_integral
+        self.net_integral += error * car.dt
+        I: float = self.K_I * self.net_integral
         D: float = 0
-        if car.error_prev:
-            D = self.K_D * (error - car.error_prev)
-        car.error_prev = error
+        if self.error_prev is not None:
+            D = self.K_D * (error - self.error_prev) / car.dt
+        self.error_prev = error
         return (P + I + D, error)
 
 def acceleration_to_throttle_percentage(desired_acceleration: float, mass: float = 1000, max_throttle_force: float = 5000) -> float:
