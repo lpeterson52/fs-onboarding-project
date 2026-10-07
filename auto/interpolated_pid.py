@@ -16,12 +16,28 @@ class GainPoint:
             raise ValueError(f"Gains must be non-negative: {self}")
     
 def _is_strictly_increasing(arr: np.ndarray):
+    """Returns whether or not a numpy array is strictly increasing.
+    
+    Args:
+        arr: Numpy array to be checked
+    
+    Returns:
+        If the array is strictly increasing.
+    """
+    
     return all(a < b for a, b in zip(arr, arr[1:]))
     
 
 class InterpolatedPID():
     
     def __init__(self, gain_table: list[GainPoint]):
+        """A simple PID Controller with gain scheduling and back-calculation
+        
+        Args:
+            gain_table: A strictly increasing list of Gain Points representing gains at different
+                velocities.
+        """
+        
         self.velocities = np.array([p.velocity for p in gain_table])
         
         if not gain_table:
@@ -40,6 +56,15 @@ class InterpolatedPID():
         
         
     def get_interpolated_gains(self, velocity: float) -> GainPoint:
+        """Calculates the gains for a specific velocity through interpolation.
+        
+        Args:
+            velocity: Velocity to calculate gains for.
+        
+        Returns:
+            A GainPoint containing the calculated gains.
+        """
+        
         return GainPoint(
             velocity=velocity,
             K_P=float(np.interp(velocity, self.velocities, self.K_Ps)),
@@ -49,6 +74,15 @@ class InterpolatedPID():
         )
     
     def calculate_desired_acceleration(self, car: Car) -> tuple[float, float]:
+        """Calculates desired acceleration through gain scheduling and back-calculation.
+        
+        Args:
+            car: Car to calculate acceleration for.
+        
+        Returns:
+            (desired_acceleration, error) where the error is (car.desired_v - car.velocity)
+        """
+        
         gains: GainPoint = self.get_interpolated_gains(car.velocity)
         error: float = car.desired_v - car.velocity
         P: float = gains.K_P * error
