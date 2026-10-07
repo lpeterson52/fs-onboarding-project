@@ -19,11 +19,13 @@ times: list[float] = []
 # Run PID Simulation
 for _ in range(STEPS):
     (desired_acceleration, error) = pid_controller.calculate_desired_acceleration(car=car)
-    throttle_percentage: float = acceleration_to_throttle_percentage(car=car, desired_acceleration=desired_acceleration)
-    car.update(throttle_perc=throttle_percentage)
     velocities.append(car.velocity)
     errors.append(error)
     times.append(car.time)
+    
+    throttle_percentage: float = acceleration_to_throttle_percentage(car=car, desired_acceleration=desired_acceleration)
+    car.update(throttle_perc=throttle_percentage)
+    
 
 plt.plot(times, velocities)
 plt.ylabel("Velocity")
