@@ -49,7 +49,7 @@ class InterpolatedPID():
         self.K_Is = np.array([p.K_I for p in gain_table])
         self.K_Ds = np.array([p.K_D for p in gain_table])
         self.K_Bs = np.array([p.K_B for p in gain_table])
-        
+
         self.error_prev: float = None
         self.net_integral: float = 0.0
         
