@@ -32,7 +32,7 @@ class Car:
             throttle_perc: throttle percentage (-1 to 1)
         """
         force = throttle_perc * self.max_throttle_force
-        self.acceleration = (force / self.mass) - self.drag_function(self.velocity)
+        self.acceleration = (force - self.drag_function(self.velocity)) / self.mass
         self.velocity += self.acceleration * self.dt
         self.x += self.velocity * self.dt
         self.time += self.dt
