@@ -7,7 +7,7 @@ def create_drag_function(drag_coefficient: float,
     
     Args:
         drag_coefficient: Coefficient of drag in equation.
-        density: Density of object [kg/m^3].
+        density: Air density [kg/m^3].
         reference_area: Reference area of object [m^2].
     
     Returns:
