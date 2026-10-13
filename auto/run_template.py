@@ -5,22 +5,22 @@ from interpolated_pid import InterpolatedPID, GainPoint
 from drag_function import create_drag_function
 
 K_P = 2
-K_I = 0.2
+K_I = 0.22
 K_D = 0.5
-K_B = 0.08
-DRAG_FUNCTION = create_drag_function(drag_coefficient=0.01,
-                                     density=0.1,
-                                     reference_area=0.1)
+K_B = 0.12
+DRAG_FUNCTION = create_drag_function(drag_coefficient=0.23,
+                                     reference_area=2)
 
-car: Car = Car(desired_v=60.0, dt=0.1, drag_function=DRAG_FUNCTION)
+car: Car = Car(desired_v=80, dt=0.1, drag_function=DRAG_FUNCTION)
 
 gain_table: list[GainPoint] = [
-    GainPoint(velocity=0.0,  K_P=1.5, K_I=0.05, K_D=0.2, K_B=0.04),
-    GainPoint(velocity=30.0, K_P=1.0, K_I=0.10, K_D=0.3, K_B=0.05),
-    GainPoint(velocity=60.0, K_P=2.0, K_I=0.15, K_D=0.4, K_B=0.3),
+    GainPoint(velocity=0.0,  K_P=1.5, K_I=0.03, K_D=0.2, K_B=0.03),
+    GainPoint(velocity=30.0, K_P=1.0, K_I=0.03, K_D=0.3, K_B=0.03),
+    GainPoint(velocity=60.0, K_P=2.0, K_I=0.15, K_D=0.4, K_B=0.10),
+    GainPoint(velocity=80.0, K_P=2.0, K_I=0.3, K_D=0.4, K_B=0.1)
 ]
-# pid_controller = InterpolatedPID(gain_table)
-pid_controller = PIDController(K_P=K_P, K_I=K_I, K_D=K_D, K_B=K_B)
+pid_controller = InterpolatedPID(gain_table)
+# pid_controller = PIDController(K_P=K_P, K_I=K_I, K_D=K_D, K_B=K_B)
 
 SECONDS:    int = 55
 STEPS:      int = int(SECONDS / car.dt)
