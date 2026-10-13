@@ -1,5 +1,5 @@
 import numpy as np
-from collections import Callable
+from collections.abc import Callable
 
 class Car:
     def __init__(self, desired_v: float=20.0, dt: float=0.1, mass: float=1000, max_throttle_force: float=5000, drag_function: Callable[[float], float] = lambda _: 2):
